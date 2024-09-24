@@ -103,8 +103,14 @@ class TenancyServiceProvider extends ServiceProvider
     {
         $this->bootEvents();
         $this->mapRoutes();
-
         $this->makeTenancyMiddlewareHighestPriority();
+        // Middleware\InitializeTenancyBySubdomain::$onFail = function($e, $request, $next){
+        //     if($e::class === 'Stancl\Tenancy\Exceptions\NotASubdomainException' && in_array($request->getHost(), config('tenancy.central_domains'))){
+        //         return $next($request);
+        //     }
+
+        //     throw $e;
+        // };
 
     }
 
@@ -137,11 +143,11 @@ class TenancyServiceProvider extends ServiceProvider
             // Even higher priority than the initialization middleware
             Middleware\PreventAccessFromCentralDomains::class,
 
-            Middleware\InitializeTenancyByDomain::class,
-            Middleware\InitializeTenancyBySubdomain::class,
+            // Middleware\InitializeTenancyByDomain::class,
+            // Middleware\InitializeTenancyBySubdomain::class,
             Middleware\InitializeTenancyByDomainOrSubdomain::class,
-            Middleware\InitializeTenancyByPath::class,
-            Middleware\InitializeTenancyByRequestData::class,
+            // Middleware\InitializeTenancyByPath::class,
+            // Middleware\InitializeTenancyByRequestData::class,
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
